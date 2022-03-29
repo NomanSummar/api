@@ -280,7 +280,6 @@ class ProxyProvider:
                         + self.get_from_prov8()))
 
 
-
 def time_diff(start, end):
     if isinstance(start, datetime_time):  # convert to datetime
         assert isinstance(end, datetime_time)
@@ -324,6 +323,7 @@ def create_row_in_gs():
         with open('last scraped time.txt', 'r') as timefile:
             last_scrape_time = datetime.strptime(timefile.readline().strip(), '%y-%m-%d %H:%M:%S')
             current_time = dt.now().strftime('%y-%m-%d %H:%M:%S')
+            current_time = datetime.strptime(current_time, '%y-%m-%d %H:%M:%S')
             difference = abs(time_diff(last_scrape_time, current_time).total_seconds())
             if difference > 900:
                 if request.method == 'GET':
@@ -340,7 +340,7 @@ def create_row_in_gs():
                     time.sleep(1)
                     response = {'proxies': working_proxies}
                     with open('filtered_proxies.txt', 'w') as proxyfile:
-                        proxyfile.writelines(response)
+                        proxyfile.write(json.dumps(response))
                     with open('last scraped time.txt', 'w') as timefile:
                         timefile.write(str(dt.now().strftime('%y-%m-%d %H:%M:%S')))
                     return jsonify(response)
@@ -364,11 +364,11 @@ def create_row_in_gs():
             time.sleep(1)
             response = {'proxies': working_proxies}
             with open('filtered_proxies.txt', 'w') as proxyfile:
-                proxyfile.writelines(response)
+                proxyfile.write(json.dumps(response))
             with open('last scraped time.txt', 'w') as timefile:
                 timefile.write(str(dt.now().strftime('%y-%m-%d %H:%M:%S')))
             return jsonify(response)
 
 
 if __name__ == '__main__':
-    app.run(debug=False, use_reloader=True, host='0.0.0.0', port=3000)
+    app.run(debug=False, use_reloader=True, host='0.0.0.0', port=3333)
