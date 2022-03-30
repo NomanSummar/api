@@ -294,12 +294,12 @@ def time_diff(start, end):
 
 def check_proxy(proxy):
     try:
-        proxy_handler = urllib.request.ProxyHandler({'http': proxy})
+        proxy_handler = urllib.request.ProxyHandler({'https': proxy})
         opener = urllib.request.build_opener(proxy_handler)
         opener.addheaders = [
             ('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.10) Gecko/20050811 Firefox/1.0.6')]
         urllib.request.install_opener(opener)
-        sock = urllib.request.urlopen('https://www.quoka.de/')
+        sock = urllib.request.urlopen('https://www.google.com/')
         working_proxies.append(proxy)
         print('working : {}'.format(proxy))
     except urllib.error.HTTPError as e:
