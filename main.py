@@ -294,7 +294,7 @@ def time_diff(start, end):
 
 def check_proxy(proxy):
     try:
-        proxy_handler = urllib.request.ProxyHandler({'https': proxy})
+        proxy_handler = urllib.request.ProxyHandler({'http': proxy})
         opener = urllib.request.build_opener(proxy_handler)
         opener.addheaders = [
             ('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.10) Gecko/20050811 Firefox/1.0.6')]
