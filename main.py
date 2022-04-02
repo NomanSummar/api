@@ -328,16 +328,22 @@ def create_row_in_gs():
             if difference > 900:
                 if request.method == 'GET':
                     proxies = pp.get_proxies()
-                    threads = []
+                    half = (len(proxies) // 2) - 1
+                    start = 0
+                    proxy_length = half
+                    for i in range(0, 2):
+                        threads = []
 
-                    for proxy in proxies:
-                        thread = Thread(target=check_proxy, args=(proxy.strip(),))
-                        thread.start()
-                        threads.append(thread)
+                        for proxy in proxies[start:proxy_length]:
+                            thread = Thread(target=check_proxy, args=(proxy.strip(),))
+                            thread.start()
+                            threads.append(thread)
 
-                    for thread in threads:
-                        thread.join()
-                    time.sleep(1)
+                        for thread in threads:
+                            thread.join()
+                        start = half
+                        proxy_length = len(proxies)
+                        time.sleep(1)
                     response = {'proxies': working_proxies}
                     with open('filtered_proxies.txt', 'w') as proxyfile:
                         proxyfile.write(json.dumps(response))
@@ -352,16 +358,22 @@ def create_row_in_gs():
     except:
         if request.method == 'GET':
             proxies = pp.get_proxies()
-            threads = []
+            half = (len(proxies) // 2) - 1
+            start = 0
+            proxy_length = half
+            for i in range(0, 2):
+                threads = []
 
-            for proxy in proxies:
-                thread = Thread(target=check_proxy, args=(proxy.strip(),))
-                thread.start()
-                threads.append(thread)
+                for proxy in proxies[start:proxy_length]:
+                    thread = Thread(target=check_proxy, args=(proxy.strip(),))
+                    thread.start()
+                    threads.append(thread)
 
-            for thread in threads:
-                thread.join()
-            time.sleep(1)
+                for thread in threads:
+                    thread.join()
+                start = half
+                proxy_length = len(proxies)
+                time.sleep(1)
             response = {'proxies': working_proxies}
             with open('filtered_proxies.txt', 'w') as proxyfile:
                 proxyfile.write(json.dumps(response))
